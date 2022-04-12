@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
+  <v-app id="app">
     <MapView />
-  </div>
+  </v-app>
 </template>
 
 <script>
@@ -15,5 +15,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+.app{
+  width: 100%;
+  height: 100%;
+}
 </style>

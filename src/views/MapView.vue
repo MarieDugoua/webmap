@@ -1,25 +1,54 @@
 <template>
-  <l-map
-      class="map"
-      ref="map"
-      :zoom="zoom"
-      :center="center"
-      @update:zoom="zoomUpdated"
-      @update:center="centerUpdated"
-      @update:bounds="boundsUpdated"
-  >
-    <l-marker
-        v-for="(marker, index) in markers"
-        :key="index"
-        :lat-lng="marker.coordinates"
-    >
-      <l-tooltip :content="marker.name" />
-    </l-marker>
-    <l-tile-layer
-        :url="url"
-    >
-    </l-tile-layer>
-  </l-map>
+  <div class="container">
+    <div class="datePicker">
+      <v-row>
+        <v-col cols="12" sm="6" md="4">
+          <v-menu ref="menu" v-model="menu"
+            :close-on-content-click="false"
+            :return-value.sync="date"
+            transition="scale-transition"
+            offset-y min-width="auto" z-index="1000"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field v-model="date" label="Date" readonly v-bind="attrs" v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker v-model="date" no-title scrollable format="dd/MM/yyyy">
+            <v-spacer></v-spacer>
+            <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
+            <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+          </v-date-picker>
+        </v-menu>
+        </v-col>
+        <v-spacer></v-spacer>
+      </v-row>
+
+    </div>
+    <v-spacer></v-spacer>
+    <div class="mapContainer">
+      <l-map
+          class="map"
+          ref="map"
+          :zoom="zoom"
+          :center="center"
+          @update:zoom="zoomUpdated"
+          @update:center="centerUpdated"
+          @update:bounds="boundsUpdated"
+      >
+        <l-marker
+            v-for="(marker, index) in markers"
+            :key="index"
+            :lat-lng="marker.coordinates"
+        >
+          <l-tooltip :content="marker.name" />
+        </l-marker>
+        <l-tile-layer
+            :url="url"
+        >
+        </l-tile-layer>
+      </l-map>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -53,7 +82,9 @@ export default {
         {id: 4, name: 'Rome', coordinates: { lat: 41.902784, lng: 12.496366 }},
         {id: 5, name: 'Valence', coordinates: { lat: 44.933393, lng: 4.89236 }},
       ],
-      markerObjects: null
+      markerObjects: null,
+      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      menu: false,
     }
   },
   mounted: function() {
@@ -85,9 +116,8 @@ export default {
 
 <style>
 .map {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  overflow :hidden
+  margin: 0 auto;
+  width: 1200px !important;
+  height: 700px !important;
 }
 </style>
