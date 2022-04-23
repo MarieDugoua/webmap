@@ -1,52 +1,58 @@
 <template>
-  <div class="container">
-    <div class="datePicker">
-      <v-row>
-        <v-col cols="12" sm="6" md="4">
-          <v-menu ref="menu" v-model="menu"
-            :close-on-content-click="false"
-            :return-value.sync="date"
-            transition="scale-transition"
-            offset-y min-width="auto" z-index="1000"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field v-model="date" label="Date" readonly v-bind="attrs" v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker v-model="date" no-title scrollable format="dd/MM/yyyy">
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-            <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
-          </v-date-picker>
-        </v-menu>
-        </v-col>
-        <v-spacer></v-spacer>
-      </v-row>
-
+  <div class="container-fluid box">
+    <div class="img">
+      <img src="../../public/airQualityYears.png" alt="airQualityYears">
     </div>
-    <v-spacer></v-spacer>
-    <div class="mapContainer">
-      <l-map
-          class="map"
-          ref="map"
-          :zoom="zoom"
-          :center="center"
-          @update:zoom="zoomUpdated"
-          @update:center="centerUpdated"
-          @update:bounds="boundsUpdated"
-      >
-        <l-marker
-            v-for="(marker, index) in markers"
-            :key="index"
-            :lat-lng="marker.coordinates"
+    <div class="dateMap">
+      <div class="datePicker">
+        <v-row>
+          <v-col cols="12" sm="6" md="4">
+            <v-menu ref="menu" v-model="menu"
+                    :close-on-content-click="false"
+                    :return-value.sync="date"
+                    transition="scale-transition"
+                    offset-y min-width="auto" z-index="1000"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field v-model="date" label="Date" readonly v-bind="attrs" v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker v-model="date" no-title scrollable format="dd/MM/yyyy">
+                <v-spacer></v-spacer>
+                <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
+                <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+              </v-date-picker>
+            </v-menu>
+          </v-col>
+          <v-spacer></v-spacer>
+        </v-row>
+
+      </div>
+      <v-spacer></v-spacer>
+      <div class="mapContainer">
+        <l-map
+            class="map"
+            ref="map"
+            :zoom="zoom"
+            :center="center"
+            @update:zoom="zoomUpdated"
+            @update:center="centerUpdated"
+            @update:bounds="boundsUpdated"
         >
-          <l-tooltip :content="marker.name" />
-        </l-marker>
-        <l-tile-layer
-            :url="url"
-        >
-        </l-tile-layer>
-      </l-map>
+          <l-marker
+              v-for="(marker, index) in markers"
+              :key="index"
+              :lat-lng="marker.coordinates"
+          >
+            <l-tooltip v-if="marker.datas[date]" :content=" marker.name + '\n' + marker.datas[date] + ' pm10'"  />
+            <l-tooltip v-else :content="  marker.name "  />
+          </l-marker>
+          <l-tile-layer
+              :url="url"
+          >
+          </l-tile-layer>
+        </l-map>
+      </div>
     </div>
   </div>
 </template>
@@ -58,7 +64,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 L.Icon.Default.imagePath = "https://unpkg.com/leaflet@1.3.4/dist/images/";
-import jsonData from "../../public/data_test.json"
+import jsonData from "../../public/database.json"
 
 export default {
   name: 'MapView',
@@ -85,18 +91,16 @@ export default {
   methods: {
     async getJson(){
       try {
-        this.markers = {
-              name: jsonData.nom,
-              coordinates: {
-                lat: jsonData.coords[0],
-                lng: jsonData.coords[1]
-              }
-            }
+        let db = []
+        db = await jsonData
 
-        console.log(jsonData.nom)
-        console.log(jsonData.coords[0])
-        console.log(jsonData.coords[1])
+        for(let data in db){
+          let i = db[data].name.split("_")
+          let y = i[0].split(".")
+          db[data].name = y[0]
+        }
 
+        this.markers = await db
 
       }catch (e) {
         console.log(e)
@@ -119,6 +123,7 @@ export default {
     },
     boundsUpdated (bounds) {
       this.bounds = bounds;
+
     }
   },
   async mounted() {
@@ -133,6 +138,17 @@ export default {
 </script>
 
 <style>
+.box{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.img{
+  width: 50%;
+}
+.mapContainer{
+  width: 50%;
+}
 .map {
   margin: 0 auto;
   width: 1200px !important;
