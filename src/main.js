@@ -9,6 +9,7 @@ Vue.config.productionTip = false
 
 Vue.use(DatetimePicker)
 
+
 new Vue({
   router,
   vuetify,

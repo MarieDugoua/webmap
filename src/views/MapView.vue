@@ -58,6 +58,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 L.Icon.Default.imagePath = "https://unpkg.com/leaflet@1.3.4/dist/images/";
+import jsonData from "../../public/data_test.json"
 
 export default {
   name: 'MapView',
@@ -75,25 +76,34 @@ export default {
           '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       center: [ 44.837789, -0.57918 ],
       zoom: 5,
-      markers: [
-        {id: 1, name: 'Bordeaux', coordinates: { lat: 44.837789, lng: 	-0.57918 }},
-        {id: 2, name: 'Annecy', coordinates: { lat: 45.8615248, lng: 6.1673232 }},
-        {id: 3, name: 'Londre', coordinates: { lat: 51.509093, lng: -0.094151 }},
-        {id: 4, name: 'Rome', coordinates: { lat: 41.902784, lng: 12.496366 }},
-        {id: 5, name: 'Valence', coordinates: { lat: 44.933393, lng: 4.89236 }},
-      ],
+      markers: [],
       markerObjects: null,
       date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
       menu: false,
     }
   },
-  mounted: function() {
-    L.Icon.Default.imagePath = "https://unpkg.com/leaflet@1.3.4/dist/images/";
-    this.$nextTick(() => {
-      this.markerObjects = this.$refs.markersRef.map(ref => ref.mapObject);
-    });
-  },
   methods: {
+    async getJson(){
+      try {
+        this.markers = {
+              name: jsonData.nom,
+              coordinates: {
+                lat: jsonData.coords[0],
+                lng: jsonData.coords[1]
+              }
+            }
+
+        console.log(jsonData.nom)
+        console.log(jsonData.coords[0])
+        console.log(jsonData.coords[1])
+
+
+      }catch (e) {
+        console.log(e)
+      }finally {
+
+      }
+    },
     displayTooltip(selectedIndex) {
       for (let markerObject of this.markerObjects) {
         markerObject.closeTooltip();
@@ -110,7 +120,15 @@ export default {
     boundsUpdated (bounds) {
       this.bounds = bounds;
     }
-  }
+  },
+  async mounted() {
+    await this.getJson()
+
+    L.Icon.Default.imagePath = "https://unpkg.com/leaflet@1.3.4/dist/images/";
+    this.$nextTick(() => {
+      this.markerObjects = this.$refs.markersRef.map(ref => ref.mapObject);
+    });
+  },
 }
 </script>
 
