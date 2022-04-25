@@ -44,8 +44,10 @@
               :key="index"
               :lat-lng="marker.coordinates"
           >
-            <l-tooltip v-if="marker.datas[date]" :content=" marker.name + '\n' + marker.datas[date] + ' pm10'"  />
-            <l-tooltip v-else :content="  marker.name "  />
+            <l-tooltip v-if="marker.datas[date] && !marker.datas_temp[date]" :content="marker.name + ', ' + marker.datas[date] + ' pm10'"  />
+            <l-tooltip v-if="marker.datas_temp[date] && !marker.datas[date]" :content="marker.name + ', ' + JSON.stringify(marker.datas_temp[date]) + ' C°'"  />
+            <l-tooltip v-if="marker.datas_temp[date] && marker.datas[date]" :content="marker.name + ', qualité de l\'aire:  ' + marker.datas[date] + ' pm10' + ', temperature: ' + JSON.stringify(marker.datas_temp[date]) + ' C°'"  />
+            <l-tooltip v-else :content="marker.name "  />
           </l-marker>
           <l-tile-layer
               :url="url"
@@ -91,16 +93,8 @@ export default {
   methods: {
     async getJson(){
       try {
-        let db = []
-        db = await jsonData
 
-        for(let data in db){
-          let i = db[data].name.split("_")
-          let y = i[0].split(".")
-          db[data].name = y[0]
-        }
-
-        this.markers = await db
+        this.markers = await jsonData
 
       }catch (e) {
         console.log(e)
@@ -116,7 +110,6 @@ export default {
     },
     zoomUpdated (zoom) {
       this.zoom = zoom;
-      console.log(this.markers)
     },
     centerUpdated (center) {
       this.center = center;
