@@ -86,3 +86,5 @@ Vous trouverez également un sélecteur de dates (choix par années, mois et jou
 [Leaflet](https://vue2-leaflet.netlify.app/quickstart/) qui est importé pour l'affichage de la carte et son contenue.
 
 [Vuetify](https://vuetifyjs.com/en/getting-started/installation/) qui a permet d'intégrer et d'utiliser des composants tels que le sélecteur de date.
+
+La documentation pour pouvoir se servir des scripts d'entrainement des réseaux de neuronnes est disponible dans le dossier "Deep_learning_pipes", elle fournie l'arborescence nécessaire à l'exécution des scripts (qui sont à exécuter en ligne de commande).
