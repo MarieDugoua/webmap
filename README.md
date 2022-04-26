@@ -64,19 +64,19 @@ Rendez vous sur l'application une fois le server lancé en locale
 
 Tout d'abord vous allez pouvoir trouver sur la gauche des diagrammes de prévision sur la qualité de l'aire et les températures.
 
-![](/Users/marie/Documents/ynov_2021_2022/projet/webmap/public/plot1.png) ![](/Users/marie/Documents/ynov_2021_2022/projet/webmap/public/plot2.png)
+![](./public/plot1.png) ![](./public/plot2.png)
 
 Par la suite vous pouvez trouver la carte affichée ciblée sur la France ou plusieurs icons afficherons au passage de la souris les informations concernant la ville sélectionnée.
 
-![](/Users/marie/Documents/ynov_2021_2022/projet/webmap/public/map.png)
+![](./public/map.png)
 
 Vous pouvez zoomer ou dézoomer de façon à avoir une meilleure visibilité.
 
-![](/Users/marie/Documents/ynov_2021_2022/projet/webmap/public/map_zoom.png)
+![](./public/map_zoom.png)
 
 Vous trouverez également un sélecteur de dates (choix par années, mois et jours) qui dynamiquement récupérera les données d'air et de températures par ville.
 
-![](/Users/marie/Documents/ynov_2021_2022/projet/webmap/public/date_picker.png)
+![](./public/date_picker.png)
 
 
 
