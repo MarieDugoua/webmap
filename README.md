@@ -58,7 +58,7 @@ npm run serve
 
 Rendez vous sur l'application une fois le server lancé en locale
 
-[http://127.0.0.1:8000/](http://127.0.0.1:8000/) ou [http://localhost:8000/](http://localhost:8000/)
+[http://127.0.0.1:8080/](http://127.0.0.1:8080/) ou [http://localhost:8080/](http://localhost:8080/)
 
 ## Comment fonctionne le site
 
