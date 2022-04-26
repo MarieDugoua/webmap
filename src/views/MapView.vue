@@ -2,6 +2,7 @@
   <div class="container-fluid box">
     <div class="img">
       <img src="../../public/airQualityYears.png" alt="airQualityYears">
+      <img src="../../public/temperatureEvolutionYears.png" alt="temperatureEvolutionYears">
     </div>
     <div class="dateMap">
       <div class="datePicker">
@@ -133,18 +134,26 @@ export default {
 <style>
 .box{
   width: 100%;
+  height: 800px !important;
   display: flex;
   flex-direction: row;
 }
 .img{
-  width: 50%;
+  width: 40%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 }
-.mapContainer{
-  width: 50%;
+
+.img img{
+  width: 80%;
+  margin: 0 auto;
+}
+.dateMap{
+  width: 60%;
 }
 .map {
-  margin: 0 auto;
-  width: 1200px !important;
+  width: 950px !important;
   height: 700px !important;
 }
 </style>
